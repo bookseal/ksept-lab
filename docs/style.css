@@ -117,13 +117,13 @@ nav.toc li { margin: .15rem 0; }
 .rail a.current { color: var(--accent); font-weight: 700; background: var(--panel); }
 .rail a.active { color: var(--text); background: var(--panel); border-left-color: var(--accent); }
 
-/* on narrow screens drop the rail; nav.toc (where present) is the fallback */
-@media (max-width: 1000px) {
+/* only truly narrow (mobile) screens drop the rail; nav.toc is the fallback */
+@media (max-width: 720px) {
   .rail { display: none; }
   .layout { display: block; }
   .layout > .wrap { max-width: 880px; margin: 0 auto; }
 }
-@media (min-width: 1001px) {
+@media (min-width: 721px) {
   nav.toc { display: none; } /* the rail replaces it on wide screens */
 }
 
