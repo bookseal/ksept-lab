@@ -24,6 +24,7 @@
   <button id="extract-btn">Extract</button>
   <button id="copy-btn" disabled>Copy for spreadsheet</button>
   <button id="email-btn" disabled>Draft follow-up email</button>
+  <button id="copy-email-btn" disabled>Copy email</button>
   <span id="copy-status"></span>
 
   <div id="result">Results will appear here.</div>
@@ -37,6 +38,7 @@
     const input = document.getElementById("input");
     const result = document.getElementById("result");
     const emailOutput = document.getElementById("email-output");
+    const copyEmailBtn = document.getElementById("copy-email-btn");
 
     let lastData = null;  // the most recent extraction, used by copy + email buttons
 
@@ -68,6 +70,7 @@
       copyStatus.textContent = "";
       emailBtn.disabled = !hasMissing(data);
       emailOutput.style.display = "none";
+      copyEmailBtn.disabled = true;
     });
 
     function render(data) {
@@ -109,6 +112,13 @@
       });
       const result = await resp.json();
       emailOutput.textContent = result.email || result.message || "(no draft)";
+      // only allow copying when there is an actual draft
+      copyEmailBtn.disabled = !result.email;
+    });
+
+    copyEmailBtn.addEventListener("click", async () => {
+      await navigator.clipboard.writeText(emailOutput.textContent);
+      copyStatus.textContent = "✓ Email copied!";
     });
   </script>
 </body>
