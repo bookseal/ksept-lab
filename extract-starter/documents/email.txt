@@ -1,0 +1,14 @@
+From: carlos@example.com
+To: team-distrib@example.com
+Subject: Friday lunch — booking a table
+
+Hi all,
+
+I'm booking a table for 8 at Souvla (1500 Divisadero) this Friday at 12:30pm.
+Vegetarian options are good there, gluten-free is OK too.
+
+Please let me know by Thursday morning if you can't make it so I can adjust
+the headcount.
+
+Thanks,
+Carlos

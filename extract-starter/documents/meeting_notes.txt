@@ -1,0 +1,18 @@
+Engineering standup — Tuesday, Oct 24, 9:30am
+
+Attendees: Sarah (TL), Marcus, Priya, Jen
+
+Updates
+- Q4 release: on track for Nov 15. Marcus's database migration PR still needs
+  a second review by Friday — Priya volunteered to do it.
+- Customer escalation from BigCo is resolved. Priya filed the post-mortem in
+  the shared drive.
+- Onboarding flow A/B test wrapped: variant B shows a 12% lift on day-7
+  retention. Decision: ship variant B to 100% next Monday.
+
+Action items
+- [Sarah] Draft Q4 changelog by Thursday EOD.
+- [Jen]   Schedule the team retro for next week.
+- [Marcus] Address Priya's review comments on the migration by Friday.
+
+Next standup: Thursday, same time.

@@ -1,0 +1,13 @@
+Senior Backend Engineer — Acme Payments
+
+Acme Corp is hiring a senior backend engineer to join our Payments Platform
+team. You'll work on high-throughput Python services that process millions of
+transactions per day, design integrations with banking partners, and mentor
+two junior engineers.
+
+Location: San Francisco, CA. Hybrid (3 days/week in office) OR fully remote
+within the United States.
+
+Compensation: $180,000–$240,000 base salary plus equity and a 15% target bonus.
+
+Apply: jobs@acme-payments.example
