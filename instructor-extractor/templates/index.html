@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>강사 구인 추출기</title>
+  <title>Instructor Job Post Extractor</title>
   <style>
     body { font-family: -apple-system, sans-serif; max-width: 700px; margin: 40px auto; padding: 0 16px; }
     textarea { width: 100%; height: 200px; font-size: 14px; padding: 8px; box-sizing: border-box; }
@@ -12,27 +12,53 @@
   </style>
 </head>
 <body>
-  <h1>강사 구인 텍스트 추출기</h1>
-  <p>이메일·카톡에서 받은 강사 구인 글을 아래에 붙여넣고 [추출]을 누르세요.</p>
+  <h1>Instructor Job Post Extractor</h1>
+  <p>Paste an instructor job post (from email, KakaoTalk, etc.) below and click [Extract].</p>
 
-  <textarea id="input" placeholder="여기에 강사 구인 텍스트를 붙여넣으세요..."></textarea>
-  <button id="extract-btn">추출</button>
+  <textarea id="input" placeholder="Paste the instructor job post here..."></textarea>
+  <button id="extract-btn">Extract</button>
 
-  <div id="result">결과가 여기에 표시됩니다.</div>
+  <div id="result">Results will appear here.</div>
 
   <script>
     const button = document.getElementById("extract-btn");
     const input = document.getElementById("input");
     const result = document.getElementById("result");
 
-    button.addEventListener("click", () => {
+    button.addEventListener("click", async () => {
       const text = input.value.trim();
       if (text === "") {
-        result.textContent = "⚠️ 먼저 텍스트를 입력하세요.";
+        result.textContent = "⚠️ Please enter some text first.";
         return;
       }
-      result.textContent = "입력한 내용:\n" + text;
+
+      result.textContent = "Extracting...";
+
+      // ① POST the text to the server's /api/extract
+      const resp = await fetch("/api/extract", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: text }),
+      });
+
+      // ② Unpack the JSON response into a JS object
+      const data = await resp.json();
+
+      // ③ Render each field (null/empty values are flagged as ⚠️ missing)
+      render(data);
     });
+
+    function render(data) {
+      const lines = [];
+      for (const [key, value] of Object.entries(data)) {
+        if (value === null || value === "") {
+          lines.push("⚠️ " + key + ": (missing)");
+        } else {
+          lines.push(key + ": " + value);
+        }
+      }
+      result.textContent = lines.join("\n");
+    }
   </script>
 </body>
 </html>
