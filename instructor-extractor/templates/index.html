@@ -108,7 +108,7 @@
         body: JSON.stringify({ data: lastData }),
       });
       const result = await resp.json();
-      emailOutput.textContent = result.email;
+      emailOutput.textContent = result.email || result.message || "(no draft)";
     });
   </script>
 </body>

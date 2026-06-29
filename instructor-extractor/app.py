@@ -64,21 +64,43 @@ def extract():
 	return jsonify(block.input)
 
 
+# human-readable labels for the email (keys come from EXTRACT_TOOL)
+FIELD_LABELS = {
+	"course_title": "the course title or subject",
+	"location": "the class location or venue",
+	"datetime": "the date and time",
+	"pay": "the pay or compensation",
+	"contact": "the best point of contact",
+}
+
+EMAIL_SYSTEM_PROMPT = """You help an instructor named Jungmin Hong write a brief, \
+polite follow-up email to a course organizer who posted an instructor job. Some \
+details were missing from the posting. Write a concise, professional email that \
+asks ONLY for the missing details listed by the user. Keep it warm and short, \
+include a Subject line, and sign off as "Jungmin Hong". Output only the email text."""
+
+
 @app.route("/api/draft-email", methods=["POST"])
 def draft_email():
 	data = request.json.get("data", {})
-	# Mockup: return a hardcoded English draft. Real Claude generation comes next.
-	draft = (
-		"Subject: Quick question about the instructor posting\n\n"
-		"Hi,\n\n"
-		"Thank you for the opportunity. Before I confirm, could you share a few\n"
-		"missing details so I can finalize — specifically the pay and the best\n"
-		"point of contact for follow-up?\n\n"
-		"Looking forward to your reply.\n\n"
-		"Best regards,\n"
-		"Jungmin Hong"
+	missing = [key for key, value in data.items() if value in (None, "")]
+	if not missing:
+		return jsonify({"email": None, "message": "No missing fields — nothing to ask about."})
+
+	missing_labels = [FIELD_LABELS.get(key, key) for key in missing]
+	known = {k: v for k, v in data.items() if v not in (None, "")}
+	user_msg = (
+		"Missing details to ask about: " + ", ".join(missing_labels) + ".\n"
+		"Already known: " + (", ".join(f"{k} = {v}" for k, v in known.items()) or "(nothing)") + "."
 	)
-	return jsonify({"email": draft})
+
+	resp = client.messages.create(
+		model="claude-sonnet-4-6",
+		max_tokens=512,
+		system=EMAIL_SYSTEM_PROMPT,
+		messages=[{"role": "user", "content": user_msg}],
+	)
+	return jsonify({"email": resp.content[0].text})
 
 
 if __name__ == "__main__":
