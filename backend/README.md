@@ -21,7 +21,11 @@ With the `.venv` active:
 python backend/app.py
 ```
 
-The server listens on **http://localhost:5000**.
+The server listens on **http://localhost:5001**.
+
+> macOS의 AirPlay Receiver가 포트 5000(과 7000)을 점유하므로 5001을 씁니다.
+> 5000을 쓰고 싶다면 시스템 설정 → 일반 → AirDrop 및 Handoff에서
+> "AirPlay 수신 모드"를 끄세요.
 
 ## Endpoint
 

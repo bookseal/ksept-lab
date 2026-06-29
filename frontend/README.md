@@ -19,5 +19,5 @@ npm run dev
 The dev server runs on **http://localhost:5173**.
 
 Requests to `/api/*` are proxied to the Flask backend at
-`http://localhost:5000` (see `vite.config.js`), so make sure the backend is
+`http://localhost:5001` (see `vite.config.js`), so make sure the backend is
 running too.

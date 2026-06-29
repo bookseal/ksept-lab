@@ -11,4 +11,5 @@ def hello():
 
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+    # 5000 is hijacked by macOS AirPlay Receiver (AirTunes), so use 5001.
+    app.run(port=5001, debug=True)

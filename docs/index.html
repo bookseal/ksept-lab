@@ -46,21 +46,21 @@
           개별 개념에 들어가기 전에, 브라우저에서 버튼을 눌렀을 때 데이터가
           어디를 거쳐 오는지부터 봅니다. 핵심은 <strong>두 개의 서버</strong>가
           따로 돈다는 것 — 프론트(<code>:5173</code>, Vite)와
-          백(<code>:5000</code>, Flask)은 서로 다른 프로세스이자 다른 origin입니다.
+          백(<code>:5001</code>, Flask)은 서로 다른 프로세스이자 다른 origin입니다.
         </p>
         <div class="mermaid">
 flowchart LR
     B["Browser<br/>(React app on :5173)"]
     V["Vite dev server<br/>:5173"]
-    F["Flask<br/>:5000"]
+    F["Flask<br/>:5001"]
     B -->|"GET /api/hello"| V
-    V -->|"proxy forwards<br/>/api/* to :5000"| F
+    V -->|"proxy forwards<br/>/api/* to :5001"| F
     F -->|'{ message: "Hello from Flask" }'| V
     V --> B
         </div>
         <div class="callout cs">
           <strong>CS 관점:</strong> 두 서버는 각각 별도의 TCP 리슨 소켓
-          (포트 5173, 5000)을 가진 독립 프로세스입니다. 브라우저 입장에서
+          (포트 5173, 5001)을 가진 독립 프로세스입니다. 브라우저 입장에서
           포트가 다르면 곧 다른 origin이고, 이게 뒤에 나올 CORS와 프록시가
           필요한 근본 이유입니다.
         </div>
@@ -162,7 +162,7 @@ sequenceDiagram
           <strong>그럼 우리는 왜 프록시도 쓰고 CORS도 켰나?</strong> 개발 중엔
           Vite 프록시가 <code>/api</code>를 같은 origin처럼 보이게 만들어 CORS가
           애초에 발동하지 않습니다. CORS는 프록시를 안 거치고 브라우저가
-          <code>:5000</code>을 직접 때릴 때(또는 배포 환경)를 위한 안전망입니다.
+          <code>:5001</code>을 직접 때릴 때(또는 배포 환경)를 위한 안전망입니다.
         </div>
         <div class="callout cs">
           <strong>흔한 오해:</strong> CORS는 서버를 보호하는 게 아니라
@@ -228,12 +228,12 @@ flowchart TD
         <div class="mermaid">
 flowchart LR
     subgraph Dev["vite dev (:5173)"]
-      P["proxy rule:<br/>/api -> :5000"]
+      P["proxy rule:<br/>/api -> :5001"]
       M["on-demand ESM<br/>transform + HMR"]
     end
     BR["Browser"] -->|"/src/*.jsx"| M
     BR -->|"/api/*"| P
-    P --> FL["Flask :5000"]
+    P --> FL["Flask :5001"]
         </div>
         <div class="callout cs">
           <strong>dev vs build는 다른 엔진:</strong> 개발 땐 esbuild(Go로 짠

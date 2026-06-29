@@ -19,7 +19,7 @@ You need **two terminals** — one per server.
 python -m venv .venv          # first time only
 source .venv/bin/activate     # Windows: .venv\Scripts\activate
 pip install -r backend/requirements.txt
-python backend/app.py         # serves on http://localhost:5000
+python backend/app.py         # serves on http://localhost:5001
 ```
 
 ### Terminal 2 — frontend
