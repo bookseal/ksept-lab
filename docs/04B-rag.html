@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>llm-app-lab — Module 4B · Project: RAG over a corpus (end-to-end flow)</title>
-    <link rel="stylesheet" href="./style.css?v=3" />
+    <link rel="stylesheet" href="./style.css?v=4" />
     <script src="./nav.js?v=8" defer></script>
     <style>
       /* This page's mermaid diagrams are dark-node (built for a dark canvas), so
@@ -68,21 +68,7 @@
       .dtable tr.ship td { background: rgba(63, 185, 80, .10); }
       .dtable .win { color: var(--accent2); font-weight: 700; }
     </style>
-    <script type="module">
-      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-      mermaid.initialize({
-        startOnLoad: true,
-        theme: "dark",
-        themeVariables: {
-          background: "#161b22",
-          primaryColor: "#161b22",
-          primaryTextColor: "#e6edf3",
-          lineColor: "#8b949e",
-          fontFamily: "-apple-system, system-ui, sans-serif",
-        },
-        flowchart: { curve: "basis", nodeSpacing: 40, rankSpacing: 55 },
-      });
-    </script>
+    <script type="module" src="./mermaid-fx.js?v=1"></script>
   </head>
   <body>
     <div class="wrap">

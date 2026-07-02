@@ -142,11 +142,28 @@ body.rail-collapsed .rail {
 }
 body.rail-collapsed .rail-outline { display: none; }
 
-/* only truly narrow (mobile) screens drop the rail; nav.toc is the fallback */
+/* Mobile: the rail becomes an off-canvas drawer toggled by the same handle.
+   We slide it with `left` (not transform) so the fixed handle inside stays
+   pinned to the viewport and is always tappable — even when the rail is off. */
 @media (max-width: 720px) {
-  .rail { display: none; }
   .layout { display: block; }
   .layout > .wrap { max-width: 880px; margin: 0 auto; }
+  .rail {
+    display: block;
+    position: fixed; top: 0; left: 0; z-index: 200;
+    width: 260px; max-width: 82vw; height: 100vh;
+    background: var(--bg); border-right: 1px solid var(--border);
+    box-shadow: 2px 0 18px rgba(0, 0, 0, .5);
+    transition: left .22s ease;
+  }
+  body.rail-collapsed .rail { left: -280px; }        /* slid off-canvas */
+  /* the handle floats above everything so it can always reopen the drawer */
+  .rail-handle {
+    position: fixed; top: .55rem; left: .55rem; z-index: 201; margin: 0;
+    padding: .45rem .75rem; font-size: .9rem;
+    background: var(--panel); color: var(--text);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .45);
+  }
 }
 @media (min-width: 721px) {
   nav.toc { display: none; } /* the rail replaces it on wide screens */
@@ -364,3 +381,33 @@ footer {
   color: var(--muted);
   font-size: .85rem;
 }
+
+/* ── Shared mermaid visual system (paired with mermaid-fx.js) ──────────────
+   Every diagram sits in a dark card; the reveal animation fades nodes in and
+   draws edges; a node tagged `core` glows. Defined once here for all pages. */
+.mermaid {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.1rem;
+  margin: 1.2rem 0;
+  overflow-x: auto;
+}
+.mermaid svg { max-width: 100%; }
+/* 04B wraps each diagram in its own .diagram card — don't double-card there. */
+.diagram .mermaid { background: transparent; border: 0; padding: 0; margin: 0; }
+@keyframes mreveal { from { opacity: 0; } to { opacity: 1; } }
+.mermaid svg .reveal { animation: mreveal .5s ease both; }
+@keyframes corepulse {
+  0%, 100% { filter: drop-shadow(0 0 2px rgba(63, 185, 80, .45)); }
+  50%      { filter: drop-shadow(0 0 9px rgba(63, 185, 80, .9)); }
+}
+.mermaid svg .core { animation: corepulse 2.6s ease-in-out infinite; }
+.mreplay {
+  position: absolute; top: .5rem; right: .5rem; z-index: 2; line-height: 1;
+  font: inherit; font-size: .8rem; cursor: pointer; opacity: .5;
+  background: var(--code-bg); color: var(--text);
+  border: 1px solid var(--border); border-radius: 6px; padding: .2rem .5rem;
+}
+.mreplay:hover { opacity: 1; border-color: var(--accent); }
