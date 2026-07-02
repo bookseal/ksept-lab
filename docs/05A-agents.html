@@ -29,6 +29,7 @@
       <nav class="toc">
         <strong>목차</strong>
         <ul>
+          <li><a href="#orient">5A.0 · 오리엔테이션 &amp; 어휘</a></li>
           <li><a href="#loop">5A.1 · The agent loop — engine</a></li>
           <li><a href="#claude-code">5A.2 · What is Claude Code</a></li>
           <li><a href="#subagents">5A.3 · Subagents</a></li>
@@ -38,6 +39,57 @@
           <li><a href="#project">5A.7 · Project</a></li>
         </ul>
       </nav>
+
+      <!-- 5.0 orientation + vocabulary -->
+      <section id="orient">
+        <h2>5A.0 · 오리엔테이션 — 모듈 지도와 어휘 <a class="slide" href="https://ksetp.netlify.app/agents" target="_blank" rel="noopener">Slide 1–4</a></h2>
+        <p class="tldr">이 모듈은 새 알고리즘이 아니라 <strong>패턴 서베이</strong>예요. 목표는 두 가지 — 에이전트 시스템의 <strong>모양을 알아보는 눈</strong>과, 그걸 설명할 <strong>공통 어휘</strong>.</p>
+        <p class="muted">
+          앞으로 나올 9가지(루프 · Claude Code · 서브에이전트 · 메모리 · 라우팅 · 캐싱 · 롱러닝 · 컴퓨터 유즈 · 안전)는
+          전부 <strong>한 개의 루프</strong> 위에 얹거나 그 루프에 도구를 더 꽂는 레이어일 뿐입니다. 먼저 그 지도를 보고,
+          용어부터 손에 익혀요 — 뒤 섹션들이 이 단어들을 계속 다시 씁니다.
+        </p>
+        <p class="entitle">Everything in this module wraps one core loop</p>
+        <div class="mermaid">
+flowchart TB
+    subgraph WRAP["the harness — everything else"]
+      direction LR
+      SUB["subagents"]
+      MEM["memory scopes"]
+      ROUTE["model routing"]
+      CACHE["prompt caching"]
+      ASYNC["long-running / async"]
+      CU["computer use"]
+      SAFE["safety: gates + limits"]
+    end
+    WRAP --> CORE["the agent loop<br/>~20 lines"]
+        </div>
+        <div class="concept">
+          <span class="tag">핵심 어휘 — 5묶음으로</span>
+          <ul>
+            <li><strong>엔진:</strong> <em>agent</em>(루프로 도구를 부르는 프로그램) · <em>agentic loop</em>(모델→도구→결과→반복) · <em>harness</em>(루프 둘레의 통제 코드) · <em>tool registry</em>(쓸 수 있는 도구 목록) · <em>dispatcher</em>(도구 이름 → 실제 함수 연결)</li>
+            <li><strong>위임:</strong> <em>subagent</em>(자식 Claude 세션) · <em>task tool</em>(서브에이전트를 띄우는 도구) · <em>context isolation</em>(자식 작업이 부모 창을 안 더럽힘)</li>
+            <li><strong>통제:</strong> <em>permission gate</em>(도구 실행 전 허용/확인/차단) · <em>hook</em>(도구 호출 전후에 끼우는 자동 훅)</li>
+            <li><strong>비용·성능:</strong> <em>router</em>(난이도별 모델 선택) · <em>fallback</em>(1차 실패 시 2차) · <em>ensemble</em>(여럿 돌려 최선 택) · <em>cache_control: ephemeral</em>(정적 prefix 5분 캐시)</li>
+            <li><strong>비전:</strong> <em>computer use</em>(화면을 API처럼 다룸) · <em>vision tool</em>(스크린샷을 보고 다음 행동 결정)</li>
+          </ul>
+        </div>
+        <div class="callout cs">
+          🗺️ <strong>이 모듈을 관통하는 한 문장:</strong> "에이전트는 새 모델이 아니라 <em>루프 + 하니스</em>다."
+          그래서 <strong>지능은 모델에, 통제는 하니스에</strong> — 이 배치를 모든 패턴에서 반복해서 확인하게 됩니다.
+        </div>
+        <div class="quiz" data-answer="1">
+          <p class="q">이 모듈 전체를 관통하는 핵심 주장은?</p>
+          <button class="opt">에이전트마다 특별히 학습된 전용 모델이 따로 있다</button>
+          <button class="opt">화려한 에이전트도 결국 한 개의 루프 + 그 둘레의 하니스로 설명된다</button>
+          <button class="opt">도구가 많을수록 항상 더 좋은 에이전트다</button>
+          <p class="explain">
+            9가지 패턴은 전부 <strong>같은 ~20줄 루프</strong> 위의 레이어예요. 그래서 "모양 알아보기"가 목표죠 —
+            새로운 시스템을 만나도 "아, 이건 루프에 <em>메모리를 붙이고 / 도구를 더 꽂고 / 게이트를 씌운</em> 것"으로
+            환원해서 읽을 수 있게 됩니다.
+          </p>
+        </div>
+      </section>
 
       <!-- 5.1 the engine -->
       <section id="loop">
